@@ -4,7 +4,7 @@
 
 Import("env")
 
-framework_unflags = [ "-Wno-register" ]
+framework_unflags = [ "-Wno-register", "-Wno-deprecated-declarations", "-Wno-address-of-packed-member" ]
 
 env.Append(
     CXXFLAGS = framework_unflags

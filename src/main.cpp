@@ -1,6 +1,9 @@
 #include <Arduino.h>
 
+#include "accelerometer.hpp"
+#include "barometer.hpp"
 #include "gps.hpp"
+#include "logger.hpp"
 
 HardwareSerial Serial2{PA3, PA2};
 
