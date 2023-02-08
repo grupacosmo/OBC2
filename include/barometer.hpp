@@ -6,7 +6,7 @@
 #include "error.hpp"
 #include "result.hpp"
 
-namespace obc {
+namespace bmp {
 
 struct BmpMeasurements {
     double temperature;
@@ -14,10 +14,10 @@ struct BmpMeasurements {
     double altitude;
 };
 
-Result<Unit, Errc> init(BMP280& bmp);
-Result<BmpMeasurements, Errc> measure(BMP280& bmp);
+obc::Result<obc::Unit, err::Errc> init(BMP280& bmp);
+obc::Result<BmpMeasurements, err::Errc> measure(BMP280& bmp);
 void print(BmpMeasurements measurements);
 
-}  // namespace obc
+}  // namespace bmp
 
 #endif

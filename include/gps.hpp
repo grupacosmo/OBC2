@@ -9,7 +9,7 @@
 
 constexpr nmea_float_t mph_to_kph_conversion = 1.85166f;
 
-namespace obc {
+namespace gps {
 
 struct GpsTime {
     uint8_t hour;
@@ -36,12 +36,12 @@ struct GpsPosition {
     uint8_t satelites;
 };
 
-Result<Unit, Errc> init(Adafruit_GPS& gps);
-Result<Unit, Errc> measure(Adafruit_GPS& gps);
+obc::Result<obc::Unit, err::Errc> init(Adafruit_GPS& gps);
+obc::Result<obc::Unit, err::Errc> measure(Adafruit_GPS& gps);
 GpsDate read_date(Adafruit_GPS& gps);
 GpsTime read_time(Adafruit_GPS& gps);
 GpsPosition read_position(Adafruit_GPS& gps);
 
-}  // namespace obc
+}  // namespace gps
 
 #endif

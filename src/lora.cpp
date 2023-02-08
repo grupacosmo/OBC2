@@ -15,7 +15,7 @@ constexpr auto status = utl::Logger::Debug;
 
 }  // namespace
 
-Result<Unit, Errc> init_lora()
+Result<Unit, err::Errc> init_lora()
 {
     Serial5.begin(baud_rate);
 
@@ -32,7 +32,7 @@ Result<Unit, Errc> init_lora()
         Serial5.println(command);
         delay(10000);
         String payload = Serial5.readString();
-        if (payload.startsWith("ERR")) { return Err{Errc::Busy}; }
+        if (payload.startsWith("ERR")) { return Err{err::Errc::Busy}; }
     }
     return Ok{Unit{}};
 }

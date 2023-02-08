@@ -16,14 +16,14 @@
 namespace obc {
 
 struct Packet {
-    Acceleration acclr_measurements;
-    BmpMeasurements bmp_measurements;
-    GpsTime time;
-    GpsDate date;
-    GpsPosition position;
+    acc::Acceleration acclr_measurements;
+    bmp::BmpMeasurements bmp_measurements;
+    gps::GpsTime time;
+    gps::GpsDate date;
+    gps::GpsPosition position;
 };
 
-Result<Unit, Errc> sd_init();
+Result<Unit, err::Errc> sd_init();
 
 void log_boot(const char *msg);
 inline void log_boot(const String &msg) { log_boot(msg.c_str()); }
@@ -45,12 +45,12 @@ inline void log_error_and_panic(
     log_error_and_panic(msg.c_str(), loc);
 }
 
-void serialize_into(String &buf, const BmpMeasurements &data);
-void serialize_into(String &buf, const Acceleration &data);
+void serialize_into(String &buf, const bmp::BmpMeasurements &data);
+void serialize_into(String &buf, const acc::Acceleration &data);
+void serialize_into(String &buf, const gps::GpsTime &data);
+void serialize_into(String &buf, const gps::GpsPosition &data);
+void serialize_into(String &buf, const gps::GpsDate &data);
 void serialize_into(String &buf, const Packet &data);
-void serialize_into(String &buf, const GpsTime &data);
-void serialize_into(String &buf, const GpsPosition &data);
-void serialize_into(String &buf, const GpsDate &data);
 
 template <typename T>
 inline String serialize(const T &t)

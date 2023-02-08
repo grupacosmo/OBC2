@@ -6,7 +6,7 @@
 #include "error.hpp"
 #include "result.hpp"
 
-namespace obc {
+namespace acc {
 
 struct Acceleration {
     short x;
@@ -14,10 +14,10 @@ struct Acceleration {
     short z;
 };
 
-Result<Unit, Errc> init(MMA8452Q& accelerometer);
-Result<Acceleration, Errc> measure(MMA8452Q& accelerometer);
+obc::Result<obc::Unit, err::Errc> init(MMA8452Q& accelerometer);
+obc::Result<Acceleration, err::Errc> measure(MMA8452Q& accelerometer);
 void print(Acceleration acclr);
 
-}  // namespace obc
+}  // namespace acc
 
 #endif

@@ -47,12 +47,12 @@ void file_appendln(const char* file_name, const char* data)
 
 }  // namespace
 
-Result<Unit, Errc> sd_init()
+Result<Unit, err::Errc> sd_init()
 {
-    if (not SD.begin(sd_chip_select)) { return Err{Errc::Busy}; }
+    if (not SD.begin(sd_chip_select)) { return Err{err::Errc::Busy}; }
 
     init_flight_path_folder();
-    if (not SD.mkdir(flight_path_folder)) { return Err{Errc::Busy}; }
+    if (not SD.mkdir(flight_path_folder)) { return Err{err::Errc::Busy}; }
 
     log_boot("Booting time: " + String(millis()) + "ms");
 
@@ -84,10 +84,10 @@ void log_error(const char* msg)
 void log_error_and_panic(const char* msg, SourceLocation loc)
 {
     file_appendln(flight_path_folder + "/errors.txt", msg);
-    panic(msg, loc);
+    err::panic(msg, loc);
 }
 
-void serialize_into(String& buf, const GpsTime& data)
+void serialize_into(String& buf, const gps::GpsTime& data)
 {
     if (not has_tens_digit(data.hour)) { buf += '0'; }
     buf += data.hour;
@@ -110,7 +110,7 @@ void serialize_into(String& buf, const GpsTime& data)
     buf += "\t";
 }
 
-void serialize_into(String& buf, const GpsPosition& data)
+void serialize_into(String& buf, const gps::GpsPosition& data)
 {
     buf += static_cast<int>(data.fix);
     buf += "\t";
@@ -136,7 +136,7 @@ void serialize_into(String& buf, const GpsPosition& data)
     }
 }
 
-void serialize_into(String& buf, const GpsDate& data)
+void serialize_into(String& buf, const gps::GpsDate& data)
 {
     buf += " Date: ";
     buf += data.day;
@@ -147,7 +147,7 @@ void serialize_into(String& buf, const GpsDate& data)
     buf += data.year;
 }
 
-void serialize_into(String& buf, const BmpMeasurements& data)
+void serialize_into(String& buf, const bmp::BmpMeasurements& data)
 {
     buf += data.temperature;
     buf += "\t";
@@ -157,7 +157,7 @@ void serialize_into(String& buf, const BmpMeasurements& data)
     buf += "\t";
 }
 
-void serialize_into(String& buf, const Acceleration& data)
+void serialize_into(String& buf, const acc::Acceleration& data)
 {
     buf += data.x;
     buf += "\t";

@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-namespace obc {
+namespace gps {
 
 namespace {
 
@@ -10,23 +10,23 @@ constexpr auto baud_rate = 9600l;
 
 }  // namespace
 
-Result<Unit, Errc> init(Adafruit_GPS& gps)
+obc::Result<obc::Unit, err::Errc> init(Adafruit_GPS& gps)
 {
-    if (not gps.begin(baud_rate)) { return Err{Errc::Busy}; }
+    if (not gps.begin(baud_rate)) { return obc::Err{err::Errc::Busy}; }
     gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
     gps.sendCommand(PGCMD_ANTENNA);
     Serial2.println(PMTK_Q_RELEASE);
-    return Ok{Unit{}};
+    return obc::Ok{obc::Unit{}};
 }
 
-Result<Unit, Errc> measure(Adafruit_GPS& gps)
+obc::Result<obc::Unit, err::Errc> measure(Adafruit_GPS& gps)
 {
     gps.read();
     if (gps.newNMEAreceived()) {
-        if (not gps.parse(gps.lastNMEA())) { return Err{Errc::Busy}; }
+        if (not gps.parse(gps.lastNMEA())) { return obc::Err{err::Errc::Busy}; }
     }
-    return Ok{Unit{}};
+    return obc::Ok{obc::Unit{}};
 }
 
 GpsDate read_date(Adafruit_GPS& gps)
@@ -59,18 +59,18 @@ GpsPosition read_position(Adafruit_GPS& gps)
 void print(GpsTime time)
 {
     Serial.print("Time: ");
-    if (not has_tens_digit(time.hour)) { Serial.print('0'); }
+    if (not obc::has_tens_digit(time.hour)) { Serial.print('0'); }
     Serial.print(time.hour);
     Serial.print(':');
-    if (not has_tens_digit(time.minute)) { Serial.print('0'); }
+    if (not obc::has_tens_digit(time.minute)) { Serial.print('0'); }
     Serial.print(time.minute);
     Serial.print(':');
-    if (not has_tens_digit(time.seconds)) { Serial.print('0'); }
+    if (not obc::has_tens_digit(time.seconds)) { Serial.print('0'); }
     Serial.print(time.seconds);
     Serial.print('.');
-    if (not has_hundreds_digit(time.milliseconds)) {
+    if (not obc::has_hundreds_digit(time.milliseconds)) {
         // NOLINTNEXTLINE(bugprone-branch-clone)
-        if (not has_tens_digit(time.milliseconds)) { Serial.print("00"); }
+        if (not obc::has_tens_digit(time.milliseconds)) { Serial.print("00"); }
         else {
             Serial.print('0');
         }
@@ -85,7 +85,7 @@ void print(GpsDate date)
     Serial.print('/');
     Serial.print(date.month);
     Serial.print("/20");
-    if (not has_tens_digit(date.year)) { Serial.print("0"); }
+    if (not obc::has_tens_digit(date.year)) { Serial.print("0"); }
     Serial.println(date.year);
 }
 
@@ -111,4 +111,4 @@ void print(GpsPosition position)
     }
 }
 
-}  // namespace obc
+}  // namespace gps

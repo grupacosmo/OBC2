@@ -9,7 +9,7 @@
 
 namespace obc {
 
-Result<Unit, Errc> init_lora();
+Result<Unit, err::Errc> init_lora();
 String lora_packet(const Packet &);
 String make_string_from_count(size_t count, char c);
 String encode(const String &);

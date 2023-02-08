@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-namespace obc {
+namespace bmp {
 
 namespace {
 
@@ -10,25 +10,25 @@ constexpr double ground_lvl_pressure = 1013.25;
 
 }  // namespace
 
-Result<Unit, Errc> init(BMP280& bmp)
+obc::Result<obc::Unit, err::Errc> init(BMP280& bmp)
 {
-    if (bmp.begin() == 0) { return Err{Errc::Busy}; }
+    if (bmp.begin() == 0) { return obc::Err{err::Errc::Busy}; }
     bmp.setOversampling(4);
-    return Ok{Unit{}};
+    return obc::Ok{obc::Unit{}};
 }
 
-Result<BmpMeasurements, Errc> measure(BMP280& bmp)
+obc::Result<BmpMeasurements, err::Errc> measure(BMP280& bmp)
 {
     char result = bmp.startMeasurment();
     BmpMeasurements temp = {0, 0, 0};
 
-    if (result == 0) { return Err{Errc::Busy}; }
+    if (result == 0) { return obc::Err{err::Errc::Busy}; }
     result = bmp.getTemperatureAndPressure(temp.temperature, temp.pressure);
 
-    if (result == 0) { return Err{Errc::Busy}; }
+    if (result == 0) { return obc::Err{err::Errc::Busy}; }
     temp.altitude = bmp.altitude(temp.pressure, ground_lvl_pressure);
 
-    return Ok{temp};
+    return obc::Ok{temp};
 }
 
 void print(BmpMeasurements measurements)
@@ -41,4 +41,4 @@ void print(BmpMeasurements measurements)
     Serial.println();
 }
 
-}  // namespace obc
+}  // namespace bmp

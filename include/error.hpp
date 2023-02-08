@@ -5,12 +5,14 @@
 
 #include "source_location.hpp"
 
-namespace obc {
+namespace err {
 
 enum class Errc { Busy };
 
-void panic(const char* msg, SourceLocation loc = SourceLocation::current());
+void panic(
+    const char* msg,
+    obc::SourceLocation loc = obc::SourceLocation::current());
 
-}  // namespace obc
+}  // namespace err
 
 #endif

@@ -322,14 +322,14 @@ class [[nodiscard]] Result : detail::ResultBase<T, E> {
     template <typename Self>
     static auto&& unwrap_impl(Self&& self)
     {
-        if (OBC_UNLIKELY(self.is_err())) { panic("unwrap"); }
+        if (OBC_UNLIKELY(self.is_err())) { err::panic("unwrap"); }
         return std::forward<Self>(self).ok.value;
     }
 
     template <typename Self>
     static auto&& unwrap_err_impl(Self&& self)
     {
-        if (OBC_UNLIKELY(self.is_ok())) { panic("unwrap_err"); }
+        if (OBC_UNLIKELY(self.is_ok())) { err::panic("unwrap_err"); }
         return std::forward<Self>(self).err.value;
     }
 
@@ -343,7 +343,7 @@ class [[nodiscard]] Result : detail::ResultBase<T, E> {
     template <typename Self>
     static auto&& expect_impl(Self&& self, const char* msg)
     {
-        if (OBC_UNLIKELY(self.is_err())) { panic(msg); }
+        if (OBC_UNLIKELY(self.is_err())) { err::panic(msg); }
         return std::forward<Self>(self).ok.value;
     }
 };

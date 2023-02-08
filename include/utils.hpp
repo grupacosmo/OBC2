@@ -7,6 +7,8 @@ namespace utl {
 
 enum class Logger { Debug, Flight };
 
+enum class Modes { Idle, Measurements, Experiment, Uplink };
+
 template <typename Enum>
 constexpr auto to_underlying(Enum e)
 {

@@ -2,19 +2,19 @@
 
 #include <Arduino.h>
 
-namespace obc {
+namespace acc {
 
-Result<Unit, Errc> init(MMA8452Q& accelerometer)
+obc::Result<obc::Unit, err::Errc> init(MMA8452Q& accelerometer)
 {
     Wire.begin();
-    if (not accelerometer.begin()) { return Err{Errc::Busy}; }
-    return Ok{Unit{}};
+    if (not accelerometer.begin()) { return obc::Err{err::Errc::Busy}; }
+    return obc::Ok{obc::Unit{}};
 }
 
-Result<Acceleration, Errc> measure(MMA8452Q& accelerometer)
+obc::Result<Acceleration, err::Errc> measure(MMA8452Q& accelerometer)
 {
-    if (accelerometer.available() == 0) { return Err{Errc::Busy}; }
-    return Ok{Acceleration{
+    if (accelerometer.available() == 0) { return obc::Err{err::Errc::Busy}; }
+    return obc::Ok{Acceleration{
         accelerometer.getX(),
         accelerometer.getY(),
         accelerometer.getZ()}};
@@ -30,4 +30,4 @@ void print(Acceleration acclr)
     Serial.println();
 }
 
-}  // namespace obc
+}  // namespace acc
