@@ -71,7 +71,7 @@ void send_packet(const String &packet)
 {
     auto encoded_logs = encode(packet);
     String encoded = String("AT+MSG=") + "\"" + encoded_logs + "\"";
-    Serial5.print(encoded);
+    Serial5.println(encoded);
 }
 
 }  // namespace obc

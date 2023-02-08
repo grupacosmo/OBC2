@@ -8,7 +8,7 @@ extern Adafruit_GPS gps;
 
 constexpr auto custom_sda = PB9;
 constexpr auto custom_scl = PB8;
-constexpr auto custom_buzzer_pin = PA15;
+constexpr auto custom_buzzer_pin = LED_BUILTIN;  // PC13
 
 namespace obc {
 

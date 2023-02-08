@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-constexpr auto buzzer_pin = PA15;
+constexpr auto buzzer_pin = LED_BUILTIN;  // PC13
 
 namespace obc {
 
