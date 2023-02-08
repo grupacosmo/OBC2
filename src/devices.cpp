@@ -6,17 +6,18 @@ extern MMA8452Q accelerometer;
 extern BMP280 bmp;
 extern Adafruit_GPS gps;
 
-constexpr auto SDA = PB9;
-constexpr auto SCL = PB8;
+constexpr auto custom_sda = PB9;
+constexpr auto custom_scl = PB8;
+constexpr auto custom_buzzer_pin = PA15;
 
 namespace obc {
 
 void init()
 {
-    Wire.setSDA(SDA);
-    Wire.setSCL(SCL);
+    Wire.setSDA(custom_sda);
+    Wire.setSCL(custom_scl);
 
-    pinMode(D6, OUTPUT);
+    pinMode(custom_buzzer_pin, OUTPUT);
     sd_init().expect("SD init failure");
 
     if (auto result = init(accelerometer); result.is_err()) {
