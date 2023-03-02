@@ -1,19 +1,23 @@
 #include <Arduino.h>
+#include <IWatchdog.h>
 
-#include "accelerometer.hpp"
-#include "barometer.hpp"
 #include "devices.hpp"
-#include "gps.hpp"
-#include "logger.hpp"
 #include "utils.hpp"
 
-auto current_mode = utl::Modes::Idle;
+constexpr auto baud_rate = 9600l;
+constexpr auto watchdog_interval = 10000000;
 
-HardwareSerial Serial2{PA3, PA2};
-Adafruit_GPS gps{&Serial2};
-MMA8452Q accelerometer;
-BMP280 bmp;
+auto current_mode = utl::Modes::Measurements;
 
-void setup() { obc::init(); }
+void setup()
+{
+    Serial.begin(baud_rate);
+    IWatchdog.begin(watchdog_interval);
+    obc::init();
+}
 
-void loop() { utl::handle_mode(current_mode); }
+void loop()
+{
+    utl::handle_mode(current_mode);
+    IWatchdog.reload();
+}
