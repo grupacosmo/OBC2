@@ -1,13 +1,14 @@
 Checks: '
 -*,
 bugprone-*,
+-bugprone-easily-swappable-parameters
 cert-*,
 -cert-err58-cpp,
 -cert-dcl16-c,
 cppcoreguidelines-*,
 -cppcoreguidelines-avoid-magic-numbers,
-modernize-*,
 -cppcoreguidelines-avoid-non-const-global-variables,
+modernize-*,
 -modernize-use-nodiscard,
 -modernize-avoid-c-arrays,
 -modernize-use-trailing-return-type,
@@ -24,5 +25,4 @@ hicpp-*,-hicpp-special-member-functions,
 -hicpp-no-array-decay,
 -hicpp-noexcept-move,
 -hicpp-uppercase-literal-suffix,
--bugprone-easily-swappable-parameters
 '
