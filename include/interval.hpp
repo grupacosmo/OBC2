@@ -18,7 +18,7 @@ class Interval {
    public:
     explicit constexpr Interval(uint32_t interval) : interval{interval} {}
 
-    const auto check()
+    auto check()
     {
         const auto eval = [&]() { return current_time - prev_time < interval; };
         current_time = millis();
@@ -29,19 +29,18 @@ class Interval {
 
     template <typename Func, typename... Ts>
     constexpr auto execute(Func&& func, Ts&&... args)
+        -> std::optional<decltype(std::invoke(
+            std::forward<Func>(func),
+            std::forward<Ts>(args)...))>
     {
         static_assert(std::is_invocable_v<Func&&, Ts&&...>);
 
-        using ret = std::optional<decltype(std::invoke(
-            std::forward<Func>(func),
-            std::forward<Ts>(args)...))>;
-
         if (check()) {
-            return ret{std::invoke(
+            return std::optional{std::invoke(
                 std::forward<Func>(func),
                 std::forward<Ts>(args)...)};
         }
-        return ret{};
+        return std::nullopt;
     }
 };
 

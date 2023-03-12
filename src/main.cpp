@@ -17,7 +17,6 @@ MMA8452Q accelerometer_dev;
 
 obc::Interval interval{interval_500};
 
-
 void setup()
 {
     // put your setup code here, to run once:
@@ -25,7 +24,6 @@ void setup()
 
 void loop()
 {
-
     const auto gps_setup = interval.execute(gps::measure, gps_dev);
     const auto acclr = interval.execute(bmp::measure, bmp_dev);
     const auto bmp_measurements =
