@@ -2,9 +2,10 @@
 
 #include <Arduino.h>
 
-extern MMA8452Q accelerometer;
-extern BMP280 bmp;
-extern Adafruit_GPS gps;
+HardwareSerial Serial2{PA3, PA2};
+Adafruit_GPS gps{&Serial2};
+MMA8452Q accelerometer;
+BMP280 bmp;
 
 constexpr auto custom_sda = PB9;
 constexpr auto custom_scl = PB8;
@@ -45,6 +46,7 @@ void init()
     }
 
     log_boot("Devices initialized properly.");
+    obc::buzzer(5);
 }
 
 }  // namespace obc
