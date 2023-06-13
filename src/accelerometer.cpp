@@ -4,20 +4,22 @@
 
 namespace obc {
 
-Result<Unit, Errc> init(MMA8452Q& accelerometer)
+Result<Unit, Errc> init(Adafruit_MPU6050& accelerometer)
 {
     Wire.begin();
     if (not accelerometer.begin()) { return Err{Errc::Busy}; }
     return Ok{Unit{}};
 }
 
-Result<Acceleration, Errc> measure(MMA8452Q& accelerometer)
+Result<Acceleration, Errc> measure(Adafruit_MPU6050& accelerometer)
 {
-    if (accelerometer.available() == 0) { return Err{Errc::Busy}; }
+    accelerometer.getClock();
+    /*if (accelerometer.available() == 0) { return Err{Errc::Busy}; }
     return Ok{Acceleration{
         accelerometer.getX(),
         accelerometer.getY(),
-        accelerometer.getZ()}};
+        accelerometer.getZ()}};*/
+    return Ok{Acceleration{0, 0, 0}};
 }
 
 void print(Acceleration acclr)

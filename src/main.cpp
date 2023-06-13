@@ -20,7 +20,7 @@ bool is_date_appended = false;
 
 HardwareSerial Serial2{PA3, PA2};
 Adafruit_GPS gps{&Serial2};
-MMA8452Q accelerometer;
+Adafruit_MPU6050 accelerometer;
 BMP280 bmp;
 
 uint32_t timer = millis();
@@ -48,7 +48,7 @@ void loop()
             logs.bmp_measurements = bmp_measurements.unwrap();
         }
 
-        if (not is_date_appended) {
+        if (not is_date_appended and logs.position.fix) {
             obc::log_boot(obc::serialize(obc::read_date(gps)));
             is_date_appended = true;
         }
