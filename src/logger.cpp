@@ -49,10 +49,10 @@ void file_appendln(const char* file_name, const char* data)
 
 Result<Unit, Errc> sd_init()
 {
-    if (not SD.begin(sd_chip_select)) { return Err{Errc::Busy}; }
+    if (not SD.begin(sd_chip_select)) { return Err{ Errc::Busy }; }
 
     init_flight_path_folder();
-    if (not SD.mkdir(flight_path_folder)) { return Err{Errc::Busy}; }
+    if (not SD.mkdir(flight_path_folder)) { return Err{ Errc::Busy }; }
 
     log_boot("Booting time: " + String(millis()) + "ms");
 
@@ -63,7 +63,7 @@ Result<Unit, Errc> sd_init()
 
     log_data(logs_legend);
 
-    return Ok{Unit{}};
+    return Ok{ Unit{} };
 }
 
 void log_boot(const char* msg)
@@ -157,13 +157,19 @@ void serialize_into(String& buf, const BmpMeasurements& data)
     buf += "\t";
 }
 
-void serialize_into(String& buf, const Acceleration& data)
+void serialize_into(String& buf, const AcclrMeasurements& data)
 {
-    buf += data.x;
+    buf += data.gyro_measurements.x;
     buf += "\t";
-    buf += data.y;
+    buf += data.gyro_measurements.y;
     buf += "\t";
-    buf += data.z;
+    buf += data.gyro_measurements.z;
+    buf += "\t";
+    buf += data.acclr_measurements.x;
+    buf += "\t";
+    buf += data.acclr_measurements.x;
+    buf += "\t";
+    buf += data.acclr_measurements.x;
     buf += "\t";
 }
 
