@@ -15,13 +15,14 @@ constexpr std::array<const char, airborne_hex_array_size> airborne_mode_set = {
     0x00, 0x00, 0x00, 0x10, 0x27, 0x00, 0x00, 0x05, 0x00, 0xfa, 0x00,
     0xfa, 0x00, 0x64, 0x00, 0x2c, 0x01, 0x00, 0x3c, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x52, 0xe9,
-    0xb5, 0x62, 0x06, 0x24, 0x00, 0x00, 0x2a, 0x84};
+    0xb5, 0x62, 0x06, 0x24, 0x00, 0x00, 0x2a, 0x84
+};
 
 }  // namespace
 
 Result<Unit, Errc> init(Adafruit_GPS& gps)
 {
-    if (not gps.begin(baud_rate)) { return Err{Errc::Busy}; }
+    if (not gps.begin(baud_rate)) { return Err{ Errc::Busy }; }
     gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
     gps.sendCommand(PGCMD_ANTENNA);
@@ -29,43 +30,38 @@ Result<Unit, Errc> init(Adafruit_GPS& gps)
     Serial2.write(airborne_mode_set.data(), airborne_mode_set.size());
     Serial2.write("\0");
 
-    return Ok{Unit{}};
+    return Ok{ Unit{} };
 }
 
 Result<Unit, Errc> measure(Adafruit_GPS& gps)
 {
     gps.read();
     if (gps.newNMEAreceived()) {
-        if (not gps.parse(gps.lastNMEA())) { return Err{Errc::Busy}; }
+        if (not gps.parse(gps.lastNMEA())) { return Err{ Errc::Busy }; }
     }
-    return Ok{Unit{}};
+    return Ok{ Unit{} };
 }
 
 GpsDate read_date(Adafruit_GPS& gps)
 {
-    return GpsDate{gps.year, gps.month, gps.day};
+    return GpsDate{ gps.year, gps.month, gps.day };
 }
 
 GpsTime read_time(Adafruit_GPS& gps)
 {
-    return GpsTime{gps.hour, gps.minute, gps.seconds, gps.milliseconds};
+    return GpsTime{ gps.hour, gps.minute, gps.seconds, gps.milliseconds };
 }
 
 GpsPosition read_position(Adafruit_GPS& gps)
 {
     if (gps.fix) {
         return GpsPosition{
-            gps.fix,
-            gps.fixquality,
-            gps.longitudeDegrees,
-            gps.lon,
-            gps.latitudeDegrees,
-            gps.lat,
-            gps.altitude,
-            gps.speed,
-            gps.satellites};
+            gps.fix,      gps.fixquality,      gps.longitudeDegrees,
+            gps.lon,      gps.latitudeDegrees, gps.lat,
+            gps.altitude, gps.speed,           gps.satellites
+        };
     }
-    return GpsPosition{false, 0, 0, 0, 0, 0, 0, 0, 0};
+    return GpsPosition{ false, 0, 0, 0, 0, 0, 0, 0, 0 };
 }
 
 void print(GpsTime time)

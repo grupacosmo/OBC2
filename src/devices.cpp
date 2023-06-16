@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-extern MMA8452Q accelerometer;
+extern Adafruit_MPU6050 accelerometer;
 extern BMP280 bmp;
 extern Adafruit_GPS gps;
 
@@ -20,29 +20,30 @@ void init()
     pinMode(custom_buzzer_pin, OUTPUT);
     sd_init().expect("SD init failure");
 
-    if (auto result = init(accelerometer); result.is_err()) {
-        log_error_and_panic(
-            String("Accelerometer not initialized properly, errc: ")
-            + utl::to_underlying(result.unwrap_err()));
-    }
-
-    if (auto result = init(bmp); result.is_err()) {
-        log_error_and_panic(
-            String("Barometer not initialized properly, errc: ")
-            + utl::to_underlying(result.unwrap_err()));
-    }
-
-    if (auto result = init(gps); result.is_err()) {
-        log_error_and_panic(
-            String("GPS not initialized properly, errc: ")
-            + utl::to_underlying(result.unwrap_err()));
-    }
-
     if (auto result = init_lora(); result.is_err()) {
         log_error_and_panic(
             String("Lora not initialized properly, errc: ")
             + utl::to_underlying(result.unwrap_err()));
     }
+    log_boot("Lora Init --- [OK]");
+
+    constexpr auto initialize_device = [&](auto& device, const String& name) {
+        if (auto result = init(device); result.is_err()) {
+            send_packet(String(name + " [INIT ERROR]"));
+            log_error_and_panic(
+                String(name + " not initialized properly, errc: ")
+                + utl::to_underlying(result.unwrap_err()));
+        }
+        log_boot(String(name + " Init --- [OK]"));
+
+        send_packet(String(name + " [OK]"));
+
+        delay(10000);
+    };
+
+    initialize_device(accelerometer, "Accelerometer");
+    initialize_device(bmp, "BMP");
+    initialize_device(gps, "GPS");
 
     log_boot("Devices initialized properly.");
 }

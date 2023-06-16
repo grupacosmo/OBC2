@@ -18,9 +18,9 @@ constexpr std::size_t buzzer_ind_fix_not_fetched = 1;
 
 bool is_date_appended = false;
 
-HardwareSerial Serial2{PA3, PA2};
-Adafruit_GPS gps{&Serial2};
-MMA8452Q accelerometer;
+HardwareSerial Serial2{ PA3, PA2 };
+Adafruit_GPS gps{ &Serial2 };
+Adafruit_MPU6050 accelerometer;
 BMP280 bmp;
 
 uint32_t timer = millis();
@@ -37,7 +37,7 @@ void setup()
 void loop()
 {
     if (obc::measure(gps).is_ok() and millis() - timer > logs_interval) {
-        obc::Packet logs = {{}, {}, {}, {}, {}};
+        obc::Packet logs = { {}, {}, {}, {}, {} };
         const auto acclr = obc::measure(accelerometer);
         const auto bmp_measurements = obc::measure(bmp);
         logs.time = obc::read_time(gps);
@@ -48,7 +48,7 @@ void loop()
             logs.bmp_measurements = bmp_measurements.unwrap();
         }
 
-        if (not is_date_appended) {
+        if (not is_date_appended and logs.position.fix) {
             obc::log_boot(obc::serialize(obc::read_date(gps)));
             is_date_appended = true;
         }

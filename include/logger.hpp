@@ -16,7 +16,7 @@
 namespace obc {
 
 struct Packet {
-    Acceleration acclr_measurements;
+    AcclrMeasurements acclr_measurements;
     BmpMeasurements bmp_measurements;
     GpsTime time;
     GpsDate date;
@@ -46,7 +46,7 @@ inline void log_error_and_panic(
 }
 
 void serialize_into(String &buf, const BmpMeasurements &data);
-void serialize_into(String &buf, const Acceleration &data);
+void serialize_into(String &buf, const AcclrMeasurements &data);
 void serialize_into(String &buf, const Packet &data);
 void serialize_into(String &buf, const GpsTime &data);
 void serialize_into(String &buf, const GpsPosition &data);

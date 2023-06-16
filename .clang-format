@@ -13,5 +13,6 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 IndentRequires: true
 PenaltyReturnTypeOnItsOwnLine: 1000
+Cpp11BracedListStyle: false
 BreakBeforeBinaryOperators: NonAssignment
 AlignOperands: AlignAfterOperator
